@@ -66,9 +66,17 @@ call mpi_gather(max_sum, 1, MPI_REAL8, Max_value_submatrixA(0:mpiSize-1),mpiSize
    numRank_with_maxsubA=maxloc(Max_value_submatrixA(0:mpiSize-1),1)
    endif
 
+ call mpi_bcast(numRank_with_maxsubA,1,MPI_REAL8,0,MPI_COMM_WORLD,mpiErr)
+   
+   call mpi_bcast(x1,1,MPI_REAL8,numRank_with_maxsubA,MPI_COMM_WORLD,mpiErr)
+   call mpi_bcast(y1,1,MPI_REAL8,numRank_with_maxsubA,MPI_COMM_WORLD,mpiErr)
+   call mpi_bcast(x2,1,MPI_REAL8,numRank_with_maxsubA,MPI_COMM_WORLD,mpiErr)
+   call mpi_bcast(y2,1,MPI_REAL8,numRank_with_maxsubA,MPI_COMM_WORLD,mpiErr)
+   
 
 
 deallocate(current_column)
+   deallocate(Max_value_submatrixA)
  
   if(transpos) then
      emp=x1
