@@ -12,6 +12,8 @@ subroutine GetMaxCoordinates(A,x1,y1,x2,y2)
    logical :: transpos
    integer(4) :: mpiErr,mpiSize,mpiRank
    integer(4),dimension(MPI_STATUS_SIZE) :: status
+   real(8),allocatable,dimension(:) :: Max_value_submatrixA
+   real(8) numRank_with_maxsubA
 
    call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
    call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
@@ -55,6 +57,15 @@ y2=2
           endif
      enddo
    enddo
+
+allocate(Max_value_submatrixA(0:mpiSize-1))
+
+call mpi_gather(max_sum, 1, MPI_REAL8, Max_value_submatrixA(0:mpiSize-1),mpiSize , MPI_REAL8, 0,MPI_COMM_WORLD,mpiErr)
+
+ if(mpiRank==0) then
+   numRank_with_maxsubA=maxloc(Max_value_submatrixA(0:mpiSize-1),1)
+   endif
+
 
 
 deallocate(current_column)
