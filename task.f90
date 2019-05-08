@@ -10,6 +10,11 @@ subroutine GetMaxCoordinates(A,x1,y1,x2,y2)
    real(8), allocatable :: current_column(:), B(:,:)
    real(8) :: current_sum, max_sum
    logical :: transpos
+   integer(4) :: mpiErr,mpiSize,mpiRank
+   integer(4),dimension(MPI_STATUS_SIZE) :: status
+
+   call mpi_comm_size(MPI_COMM_WORLD, mpiSize, mpiErr)
+   call mpi_comm_rank(MPI_COMM_WORLD, mpiRank, mpiErr)
    
    m = size(A,1) 
    n = size(A,2) 
@@ -32,7 +37,7 @@ x2=1
 y1=1
 y2=2
 
-   do l=1,n
+   do l=mpiRank+1,n,mpiSize
      current_column=B(:,l)
      do r=l,n
          if(r>l) then
