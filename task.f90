@@ -46,7 +46,7 @@ subroutine GetMaxCoordinates(A,x1,y1,x2,y2)
            current_column = current_column + B(:,r)  
          endif
       
-           call GetMaxInArray(current_column,current_sum,up,down)
+         call GetMaxInArray(current_column,current_sum,up,down)
           
          if(current_sum > max_sum) then
            max_sum = current_sum
@@ -104,8 +104,8 @@ subroutine GetMaxInArray(c,sum,up,down)
      cur_sum = cur_sum + c(i)
        if(cur_sum > sum) then
          sum = cur_sum
-           up = minus_pos + 1
-           down = i
+         up = minus_pos + 1
+         down = i
        endif
        
        if(cur_sum < 0) then
